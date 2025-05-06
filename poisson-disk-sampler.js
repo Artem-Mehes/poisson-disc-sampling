@@ -6,7 +6,7 @@ class PoissonDiskSampler {
     };
     this.minimumDistance = minimumDistance;
     this.samplesBeforeRejection = samplesBeforeRejection;
-    this.dimensionsCount = 2;
+    this.dimensionsCount = 2; // We're working in 2D
     this.maximumDistance = 2 * minimumDistance;
     this.gridCellSize = minimumDistance / Math.sqrt(this.dimensionsCount);
 
