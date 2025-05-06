@@ -5,26 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Project</title>
 </head>
-<body style="display: flex; gap: 300px;">
-  <div style="display: flex; flex-direction: column; gap: 20px;">
-    <h2>Uniform random:</h2>
-    <svg width="500" height="500" style="background-color: black;" id="uniform-random">
+<body style="display: flex; flex-direction: column; gap: 100px;">
+  <div style="display: flex; gap: 100px;">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <h2>Uniform random:</h2>
+      <svg width="500" height="500" style="background-color: black;" id="uniform-random">
+  
+      </svg>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">    
+      <h2>Poisson disk:</h2>
+      <svg width="500" height="500" style="background-color: black;" id="poisson-disk">
+  
+      </svg>
+  </div>
+ 
+
+
+
+
+
+  </div>
+
+  <div>
+    <h2>Triangle with uniform random:</h2>
+
+    <svg width="500" height="500" style="background-color: black;" id="triangle">
 
     </svg>
   </div>
 
-
-  <div style="display: flex; flex-direction: column; gap: 20px;">    <h2>
-    Poisson disk:
-  </h2>
-
-  <svg width="500" height="500" style="background-color: black;" id="poisson-disk">
-
-    </svg>
-  </div>
+  
 
     <!-- JavaScript file linked at the end of body for better performance -->
     <script src="poisson-disk-sampler.js"></script>
-    <script src="main.js"></script>
+    <script src="squares.js"></script>
+    <script src="triangle.js"></script>
 </body>
 </html> 

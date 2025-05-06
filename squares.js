@@ -34,7 +34,7 @@ uniformRandomGenerator();
 
 const poissonDiskGenerator = () => {
   const poissonDisk = document.querySelector('#poisson-disk');
-  
+
   const minimumDistance = 10;
   const samplesBeforeRejection = 30;
 
@@ -46,8 +46,6 @@ const poissonDiskGenerator = () => {
   );
 
   const points = sampler.generatePoints();
-
-  console.log(points);
 
   points.forEach((position) => {
     const circle = getCircle(position.x, position.y);
