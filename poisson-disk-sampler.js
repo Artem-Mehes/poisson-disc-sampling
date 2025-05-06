@@ -1,5 +1,12 @@
 class PoissonDiskSampler {
-  constructor(width, height, minimumDistance, samplesBeforeRejection = 30) {
+  constructor(
+    width,
+    height,
+    minimumDistance,
+    samplesBeforeRejection = 30,
+    onPointAdded = null,
+    delay = 15
+  ) {
     this.dimensions = {
       width,
       height,
@@ -9,6 +16,8 @@ class PoissonDiskSampler {
     this.dimensionsCount = 2; // We're working in 2D
     this.maximumDistance = 2 * minimumDistance;
     this.gridCellSize = minimumDistance / Math.sqrt(this.dimensionsCount);
+    this.onPointAdded = onPointAdded;
+    this.delay = delay;
 
     // Initialize grid
     this.gridWidth = Math.floor(width / this.gridCellSize);
@@ -30,9 +39,9 @@ class PoissonDiskSampler {
     const c1 = Math.min(columnIndex + 3, this.gridWidth);
     const r1 = Math.min(rowIndex + 3, this.gridHeight);
 
-    for (let j = r0; j < r1; ++j) {
+    for (let j = r0; j < r1; j++) {
       const o = j * this.gridWidth;
-      for (let i = c0; i < c1; ++i) {
+      for (let i = c0; i < c1; i++) {
         const s = this.grid[o + i];
         if (s) {
           const dx = s.x - x;
@@ -41,6 +50,7 @@ class PoissonDiskSampler {
         }
       }
     }
+
     return true;
   }
 
@@ -99,6 +109,6 @@ class PoissonDiskSampler {
       activeQueue.splice(randomActiveQueueIndex, 1);
     }
 
-    return this.grid;
+    return this.grid.filter(Boolean);
   }
 }

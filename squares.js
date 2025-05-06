@@ -3,8 +3,8 @@ const svgDimensions = {
   height: 500,
 };
 
-const samplesMaxCount = 1000;
-const circlesRadius = 2;
+const samplesMaxCount = 500;
+const circlesRadius = 1;
 
 const getCircle = (x, y) => {
   const circle = document.createElementNS(
@@ -30,8 +30,6 @@ const uniformRandomGenerator = () => {
   }
 };
 
-uniformRandomGenerator();
-
 const poissonDiskGenerator = () => {
   const poissonDisk = document.querySelector('#poisson-disk');
 
@@ -47,10 +45,11 @@ const poissonDiskGenerator = () => {
 
   const points = sampler.generatePoints();
 
-  points.forEach((position) => {
-    const circle = getCircle(position.x, position.y);
+  points.forEach((point) => {
+    const circle = getCircle(point.x, point.y);
     poissonDisk.appendChild(circle);
   });
 };
 
+uniformRandomGenerator();
 poissonDiskGenerator();

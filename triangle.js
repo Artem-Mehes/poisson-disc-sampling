@@ -1,4 +1,4 @@
-const generate = () => {
+(() => {
   const container = document.querySelector('#triangle');
 
   const A = [10, 200];
@@ -46,6 +46,4 @@ const generate = () => {
 
     container.appendChild(point);
   }
-};
-
-generate();
+})();

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Poisson Disk Sampling Visualization</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="startVisualization()">Generate Points</button>
+        <label>Delay (ms): <input type="number" id="delay" value="100" min="0" max="1000"></label>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script src="poisson-disk-sampler.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = 800;
+        const height = 600;
+        const pointRadius = 3;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        function drawPoint(point) {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, pointRadius, 0, Math.PI * 2);
+            ctx.fillStyle = '#2196F3';
+            ctx.fill();
+        }
+
+        async function startVisualization() {
+            // Clear previous points
+            ctx.clearRect(0, 0, width, height);
+            
+            const delay = parseInt(document.getElementById('delay').value);
+            const minimumDistance = 30;
+            
+            const sampler = new PoissonDiskSampler(
+                width, 
+                height, 
+                minimumDistance, 
+                30, 
+                drawPoint,
+                delay
+            );
+
+            await sampler.generatePoints();
+        }
+    </script>
+</body>
+</html> 
