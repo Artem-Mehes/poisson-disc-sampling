@@ -1,5 +1,12 @@
-(() => {
+(async () => {
   const poissonDiskContainer = document.querySelector('#triangle-poisson-disk');
+
+  const getDistanceBetweenPoints = (a, b) => {
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+
+    return Math.sqrt(dx * dx + dy * dy);
+  };
 
   const A = [10, 300];
   const B = [10, 10];
@@ -14,47 +21,43 @@
     'points',
     `${A[0]},${A[1]} ${B[0]},${B[1]} ${C[0]},${C[1]}`
   );
-  polygon.setAttribute('fill', 'blue');
+  polygon.setAttribute('fill', 'white');
 
   poissonDiskContainer.appendChild(polygon);
 
-  // const aSide = Math.hypot;
-  // const bSide = ;
-  // const cSide = ;
+  const aSide = getDistanceBetweenPoints(A, B);
+  const bSide = getDistanceBetweenPoints(B, C);
+  const cSide = getDistanceBetweenPoints(C, A);
 
-  // console.log(aSide, bSide, cSide);
+  const triangleSemiperimerer = (aSide + bSide + cSide) / 2;
+  const triangleArea = Math.sqrt(
+    triangleSemiperimerer *
+      (triangleSemiperimerer - aSide) *
+      (triangleSemiperimerer - bSide) *
+      (triangleSemiperimerer - cSide)
+  );
 
-  const points = [];
+  const minX = Math.min(A[0], B[0], C[0]);
+  const maxX = Math.max(A[0], B[0], C[0]);
+  const minY = Math.min(A[1], B[1], C[1]);
+  const maxY = Math.max(A[1], B[1], C[1]);
 
-  // Draw the points
-  points.forEach((point) => {
-    const x = point.x;
-    const y = point.y;
+  const minimumDistance = 10;
+  const samplesBeforeRejection = 30;
 
-    const pointElement = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'circle'
-    );
+  const sampler = new PoissonDiskSampler(
+    maxX,
+    maxY,
+    minimumDistance,
+    samplesBeforeRejection,
+    async (point, index) => {
+      const circle = getCircle(point.x, point.y, index);
 
-    pointElement.setAttribute('cx', x);
-    pointElement.setAttribute('cy', y);
-    pointElement.setAttribute('r', 2);
-    pointElement.setAttribute('fill', 'white');
+      await new Promise((resolve) => setTimeout(resolve, 15));
 
-    poissonDiskContainer.appendChild(pointElement);
-  });
+      poissonDiskContainer.appendChild(circle);
+    }
+  );
 
-  const showTriangleSideLetter = (points, side) => {
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('x', points[0]);
-    text.setAttribute('y', points[1]);
-    text.setAttribute('fill', 'white');
-    text.setAttribute('font-size', '20px');
-    text.textContent = side;
-    poissonDiskContainer.appendChild(text);
-  };
-
-  showTriangleSideLetter(A, 'A');
-  showTriangleSideLetter(B, 'B');
-  showTriangleSideLetter(C, 'C');
+  await sampler.generatePoints();
 })();
