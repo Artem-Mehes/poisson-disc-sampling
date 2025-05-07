@@ -69,7 +69,7 @@ class PoissonDiskSampler {
     activeQueue.push(firstPoint);
     this.grid[gridIndex] = firstPoint;
 
-    await this.onPointAdded(firstPoint);
+    await this.onPointAdded(firstPoint, gridIndex);
 
     while (activeQueue.length > 0) {
       const randomActiveQueueIndex = this.random(activeQueue.length);
@@ -108,7 +108,7 @@ class PoissonDiskSampler {
           activeQueue.push(newPosition);
           foundValidPoint = true;
 
-          await this.onPointAdded(newPosition);
+          await this.onPointAdded(newPosition, gridIndex);
 
           break;
         }
