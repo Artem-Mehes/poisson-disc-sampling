@@ -3,8 +3,6 @@ const svgDimensions = {
   height: 500,
 };
 
-
-
 const getCircle = (x, y, index) => {
   const circlesRadius = 1;
 
