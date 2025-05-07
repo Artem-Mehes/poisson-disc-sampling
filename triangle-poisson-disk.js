@@ -8,9 +8,9 @@
     return Math.sqrt(dx * dx + dy * dy);
   };
 
-  const A = [10, 300];
-  const B = [10, 10];
-  const C = [400, 10];
+  const a = [10, 300];
+  const b = [10, 10];
+  const c = [400, 10];
 
   const polygon = document.createElementNS(
     'http://www.w3.org/2000/svg',
@@ -19,35 +19,17 @@
 
   polygon.setAttribute(
     'points',
-    `${A[0]},${A[1]} ${B[0]},${B[1]} ${C[0]},${C[1]}`
+    `${a[0]},${a[1]} ${b[0]},${b[1]} ${c[0]},${c[1]}`
   );
-  polygon.setAttribute('fill', 'white');
+  polygon.setAttribute('fill', 'black');
 
   poissonDiskContainer.appendChild(polygon);
 
-  const aSide = getDistanceBetweenPoints(A, B);
-  const bSide = getDistanceBetweenPoints(B, C);
-  const cSide = getDistanceBetweenPoints(C, A);
-
-  const triangleSemiperimerer = (aSide + bSide + cSide) / 2;
-  const triangleArea = Math.sqrt(
-    triangleSemiperimerer *
-      (triangleSemiperimerer - aSide) *
-      (triangleSemiperimerer - bSide) *
-      (triangleSemiperimerer - cSide)
-  );
-
-  const minX = Math.min(A[0], B[0], C[0]);
-  const maxX = Math.max(A[0], B[0], C[0]);
-  const minY = Math.min(A[1], B[1], C[1]);
-  const maxY = Math.max(A[1], B[1], C[1]);
-
-  const minimumDistance = 10;
+  const minimumDistance = 5;
   const samplesBeforeRejection = 30;
 
-  const sampler = new PoissonDiskSampler(
-    maxX,
-    maxY,
+  const sampler = new TrianglePoissonDiskSampler(
+    { a, b, c },
     minimumDistance,
     samplesBeforeRejection,
     async (point, index) => {

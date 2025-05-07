@@ -27,7 +27,7 @@ class PoissonDiskSampler {
     return Math.floor(Math.random() * value);
   }
 
-  farEnough(newPosition) {
+  farEnoughFromNeighbours(newPosition) {
     const { x, y } = newPosition;
     const columnIndex = Math.floor(x / this.gridCellSize);
     const rowIndex = Math.floor(y / this.gridCellSize);
@@ -97,7 +97,7 @@ class PoissonDiskSampler {
           newPosition.x < this.dimensions.width &&
           newPosition.y >= 0 &&
           newPosition.y < this.dimensions.height &&
-          this.farEnough(newPosition);
+          this.farEnoughFromNeighbours(newPosition);
 
         if (isValid) {
           const columnIndex = Math.floor(newPosition.x / this.gridCellSize);

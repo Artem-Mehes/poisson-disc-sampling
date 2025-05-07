@@ -7,28 +7,44 @@
 </head>
 <body style="display: flex; flex-direction: column;">
     <div style="display: flex; gap: 100px;">
-      <div style="display: flex; flex-direction: column; gap: 20px;">
-      <h2>Uniform random:</h2>
-      <div style="height: 700px" id="uniform-random"></div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <h2>Uniform random:</h2>
+            <div style="height: 700px" id="uniform-random"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <h2>Poisson disk:</h2>
+            <div style="height: 700px" id="poisson-disk"></div>
+        </div>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 20px;">
-        <h2>Poisson disk:</h2>
-        <div style="height: 700px" id="poisson-disk"></div>
-    </div>
-    </div>
- 
     <div style="display: flex; gap: 100px;">
-      <div>
-        <h2>Triangle with uniform random:</h2>
-        <svg width="500" height="500" style="background-color: black;" id="triangle"></svg>
+        <div>
+            <h2>Triangle with uniform random:</h2>
+            <svg width="500" height="500" id="triangle"></svg>
+        </div>
+
+        <div>
+            <h2>Triangle with Poisson disk:</h2>
+            <svg width="500" height="500" id="triangle-poisson-disk"></svg>
+        </div>
     </div>
 
-    <div>
-        <h2>Triangle with Poisson disk:</h2>
-        <svg width="500" height="500" style="background-color: black;" id="triangle-poisson-disk"></svg>
-    </div>
-    </div>
+    <script>
+        const getCircle = (x, y, index) => {
+            const circlesRadius = 2;
+
+            const circle = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'circle'
+            );
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', circlesRadius);
+            circle.setAttribute('fill', `hsl(${index * 10}, 100%, 50%)`);
+            return circle;
+        };
+    </script>
     <script src="poisson-disk-sampler.js"></script>
     <script src="squares.js"></script>
     <script src="triangle.js"></script>

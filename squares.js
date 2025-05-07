@@ -3,20 +3,6 @@ const svgDimensions = {
   height: 500,
 };
 
-const getCircle = (x, y, index) => {
-  const circlesRadius = 1;
-
-  const circle = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'circle'
-  );
-  circle.setAttribute('cx', x);
-  circle.setAttribute('cy', y);
-  circle.setAttribute('r', circlesRadius);
-  circle.setAttribute('fill', `hsl(${index * 10}, 100%, 50%)`);
-  return circle;
-};
-
 const uniformRandomGenerator = async () => {
   const uniformRandom = document.querySelector('#uniform-random');
 
