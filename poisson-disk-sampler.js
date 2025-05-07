@@ -4,8 +4,7 @@ class PoissonDiskSampler {
     height,
     minimumDistance,
     samplesBeforeRejection = 30,
-    onPointAdded = null,
-    delay = 15
+    onPointAdded = null
   ) {
     this.dimensions = {
       width,
@@ -17,7 +16,6 @@ class PoissonDiskSampler {
     this.maximumDistance = 2 * minimumDistance;
     this.gridCellSize = minimumDistance / Math.sqrt(this.dimensionsCount);
     this.onPointAdded = onPointAdded;
-    this.delay = delay;
 
     // Initialize grid
     this.gridWidth = Math.floor(width / this.gridCellSize);
@@ -39,13 +37,14 @@ class PoissonDiskSampler {
     const c1 = Math.min(columnIndex + 3, this.gridWidth);
     const r1 = Math.min(rowIndex + 3, this.gridHeight);
 
-    for (let j = r0; j < r1; j++) {
+    for (let j = r0; j <= r1; j++) {
       const o = j * this.gridWidth;
-      for (let i = c0; i < c1; i++) {
+      for (let i = c0; i <= c1; i++) {
         const s = this.grid[o + i];
         if (s) {
           const dx = s.x - x;
           const dy = s.y - y;
+
           if (dx * dx + dy * dy < this.minimumDistance ** 2) return false;
         }
       }
@@ -54,7 +53,7 @@ class PoissonDiskSampler {
     return true;
   }
 
-  generatePoints() {
+  async generatePoints() {
     const activeQueue = [];
 
     // Initialize with first random point
@@ -70,9 +69,13 @@ class PoissonDiskSampler {
     activeQueue.push(firstPoint);
     this.grid[gridIndex] = firstPoint;
 
+    await this.onPointAdded(firstPoint);
+
     while (activeQueue.length > 0) {
       const randomActiveQueueIndex = this.random(activeQueue.length);
       const currentPosition = activeQueue[randomActiveQueueIndex];
+
+      let foundValidPoint = false;
 
       for (let i = 0; i < this.samplesBeforeRejection; i++) {
         const randomAngle = Math.random() * Math.PI * 2;
@@ -103,10 +106,17 @@ class PoissonDiskSampler {
 
           this.grid[gridIndex] = newPosition;
           activeQueue.push(newPosition);
+          foundValidPoint = true;
+
+          await this.onPointAdded(newPosition);
+
+          break;
         }
       }
 
-      activeQueue.splice(randomActiveQueueIndex, 1);
+      if (!foundValidPoint) {
+        activeQueue.splice(randomActiveQueueIndex, 1);
+      }
     }
 
     return this.grid.filter(Boolean);

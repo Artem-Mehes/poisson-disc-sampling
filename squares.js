@@ -30,8 +30,14 @@ const uniformRandomGenerator = () => {
   }
 };
 
-const poissonDiskGenerator = () => {
-  const poissonDisk = document.querySelector('#poisson-disk');
+const poissonDiskGenerator = async () => {
+  const container = document.querySelector('#poisson-disk');
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', svgDimensions.width);
+  svg.setAttribute('height', svgDimensions.height);
+  svg.setAttribute('style', 'background-color: black;');
+  container.appendChild(svg);
 
   const minimumDistance = 10;
   const samplesBeforeRejection = 30;
@@ -40,15 +46,17 @@ const poissonDiskGenerator = () => {
     svgDimensions.width,
     svgDimensions.height,
     minimumDistance,
-    samplesBeforeRejection
+    samplesBeforeRejection,
+    async (point) => {
+      const circle = getCircle(point.x, point.y);
+
+      await new Promise((resolve) => setTimeout(resolve, 15));
+
+      svg.appendChild(circle);
+    }
   );
 
-  const points = sampler.generatePoints();
-
-  points.forEach((point) => {
-    const circle = getCircle(point.x, point.y);
-    poissonDisk.appendChild(circle);
-  });
+  await sampler.generatePoints();
 };
 
 uniformRandomGenerator();
